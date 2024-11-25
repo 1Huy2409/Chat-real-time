@@ -43,16 +43,19 @@ module.exports.loginPost = async (req, res) => {
     });
     if (!user) {
         req.flash("error", "Tài khoản này không tồn tại!");
+        res.redirect("back");
         return;
     }
     if (md5(req.body.password) != user.password) {
         req.flash("error", "Mật khẩu không đúng, vui lòng nhập lại!");
+        res.redirect("back");
         return;
     }
     res.cookie("tokenUser", user.tokenUser);
     res.redirect("/");
 }
 module.exports.logout = async (req, res) => {
+    req.flash("success", "Đăng xuất thành công!");
     res.clearCookie("tokenUser");
     res.redirect("/");
 }
