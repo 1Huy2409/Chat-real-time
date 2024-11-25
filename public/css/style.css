@@ -265,31 +265,50 @@ a:hover {
 .inner-foot {
     padding: 10px;
     background-color: #f4f4f4;
-    display: flex;
-    align-items: center;
     border-top: 1px solid #ddd;
+    overflow: hidden; /* Để xử lý float */
+    white-space: nowrap; /* Đảm bảo các phần tử không xuống dòng */
 }
-
+.inner-foot form {
+    display: flex;
+    height: 50px;
+}
 .inner-foot input[type="text"] {
-    flex-grow: 1;
-    /* Chiếm hết không gian còn lại trong .inner-foot */
+    width: calc(100% - 120px); /* Chiều rộng tính toán, đảm bảo chiếm phần lớn không gian */
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
-    margin-right: 10px;
-    box-sizing: border-box;
-    /* Đảm bảo padding không làm thay đổi kích thước thực tế */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước thực tế */
+    float: left; /* Căn sang trái */
+}
+
+.inner-foot span {
+    width: 40px; /* Chiều rộng cố định cho biểu tượng */
+    text-align: center;
+    line-height: 40px; /* Căn giữa biểu tượng theo chiều dọc */
+    float: left; /* Căn sang trái */
+    margin-left: 10px; /* Khoảng cách giữa input và span */
+    cursor: pointer;
+    display: flex;
+}
+
+.inner-foot span i {
+    font-size: 1.2rem; /* Kích thước biểu tượng */
 }
 
 .inner-foot button {
+    width: 60px; /* Chiều rộng cố định cho nút */
     background-color: #154585;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 15px;
+    padding: 10px 0;
+    font-size: 1rem;
+    text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    float: left; /* Căn sang trái */
+    margin-left: 10px; /* Khoảng cách giữa span và button */
 }
 
 .inner-foot button:hover {
@@ -337,4 +356,12 @@ a:hover {
     background-color: #fff;
     border-radius: 50%;
     padding: 4px 8px;
+}
+/* css tooltip */
+.tooltip {
+    visibility: hidden;
+}
+.tooltip.shown {
+    visibility: visible;
+    opacity: 1;
 }

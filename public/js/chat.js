@@ -1,7 +1,7 @@
 const formSenData = document.querySelector(".inner-form");
 if (formSenData) {
     //bat su kien submit cho form
-    formSenData.addEventListener("submit", (e)=> {
+    formSenData.addEventListener("submit", (e) => {
         e.preventDefault();
         const content = e.target.elements.content.value;
         //lay duoc content => gui content nay len server
@@ -11,7 +11,7 @@ if (formSenData) {
 }
 //begin socketio
 //server return message
-socket.on("SERVER_RETURN_MESSAGE", (data)=> {
+socket.on("SERVER_RETURN_MESSAGE", (data) => {
     //nhan duoc data, dua data vao nhung the div inner-coming or inner-outgoing
     const myId = document.querySelector("[my-id]").getAttribute("my-id");
     const div = document.createElement("div");
@@ -39,3 +39,20 @@ if (body) {
     body.scrollTop = body.scrollHeight;
 }
 //end server return message
+
+const buttonIcon = document.querySelector(".button-icon");
+if (buttonIcon) {
+    const tooltip = document.querySelector(".tooltip")
+    console.log(tooltip)
+    Popper.createPopper(buttonIcon, tooltip);
+    buttonIcon.onclick = () => {
+        tooltip.classList.toggle('shown')
+    }
+}
+//insert icon to input
+const inputChat = document.querySelector(".inner-foot input[name = 'content']");
+if (inputChat) {
+    document.querySelector('emoji-picker').addEventListener('emoji-click', (e) => {
+        inputChat.value += e.detail.unicode;
+    })
+}
