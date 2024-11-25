@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
         password: String,
         tokenUser: {
             type: String,
-            default: generate.generateRandomString(20)
+            unique: true
         },
         phone: String,
         avatar: String,

@@ -1,8 +1,17 @@
 module.exports.generateRandomString = (length) => {
-    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
 
-    for (let i = 0; i < characters.length; i++) {
+    for(let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random()*characters.length));
+    }
+    return result;
+}
+module.exports.generateRandomNumber = (length) => {
+    const characters = "0123456789";
+    let result = "";
+
+    for(let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random()*characters.length));
     }
     return result;

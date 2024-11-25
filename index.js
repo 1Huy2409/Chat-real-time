@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3000
+require('dotenv').config()
 const session = require('express-session');
 const flash = require('express-flash');
 var bodyParser = require('body-parser');
