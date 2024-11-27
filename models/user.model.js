@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const generate = require("../helper/generate");
 var slug = require('mongoose-slug-updater');
 mongoose.plugin(slug);
 const userSchema = new mongoose.Schema(
@@ -17,6 +16,14 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "active"
         },
+        requestFriend: Array,
+        acceptFriend: Array,
+        friendList: [
+            {
+                user_id: String,
+                room_chat_id: String
+            }
+        ],
         delete: {
             type: Boolean,
             default: false
