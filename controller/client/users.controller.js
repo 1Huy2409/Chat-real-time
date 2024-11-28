@@ -61,5 +61,18 @@ module.exports.accept = async (req, res) => {
     })
 }
 module.exports.friendList = async (req, res) => {
-    res.send("ok");
+    const myUserId = res.locals.user.id;
+    const myUser = await User.findOne({
+        _id: myUserId
+    })
+    const listUserId = myUser.friendList.map((item) => item.user_id);
+    const users = await User.find(
+        {
+            _id: {$in: listUserId}
+        }
+    )
+    res.render("client/pages/users/friend-list", {
+        pageTitle: "Danh sách bạn bè",
+        users: users
+    })
 }
