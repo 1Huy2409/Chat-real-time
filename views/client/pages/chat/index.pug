@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug 
 include ../../mixins/box-head.pug
 block main 
+    include ../../partials/list-button.pug
     .container.my-3 
         .row
             .col-12 
@@ -30,3 +31,6 @@ block main
                                 i.fa.fa-paper-plane
         div(class = "tooltip" role = "tooltip")
             emoji-picker(class = "light")
+block script 
+    <script type = "module" src="/js/chat.js"></script>  
+     
