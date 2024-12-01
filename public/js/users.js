@@ -131,3 +131,15 @@ socket.on("SERVER_RETURN_ID_REQUEST", (data) => {
     }
 })
 // END SERVER_RETURN_ID_REQUEST
+
+// SERVER_RETURN_STATUS_ONLINE
+socket.on("SERVER_RETURN_STATUS_ONLINE", (data) => {
+    const boxStatusOnline = document.querySelector(`[user-id = "${data.userId}"]`);
+    if (boxStatusOnline) {
+        const innerStatus = boxStatusOnline.querySelector(".inner-status")
+        if (innerStatus) {
+            innerStatus.setAttribute("status-online", data.status)
+        }
+    }
+})
+// END SERVER_RETURN_STATUS_ONLINE

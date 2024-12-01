@@ -33,6 +33,14 @@ module.exports.registerPost = async (req, res) => {
             statusOnline: "Online"
         }
     )
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_STATUS_ONLINE", 
+            {
+                userId: user.id,
+                status: "Online"
+            }
+        )
+    })
     res.redirect("/");
 }
 module.exports.login = async (req, res) => {
@@ -64,6 +72,14 @@ module.exports.loginPost = async (req, res) => {
             statusOnline: "Online"
         }
     )
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_STATUS_ONLINE", 
+            {
+                userId: user.id,
+                status: "Online"
+            }
+        )
+    })
     res.redirect("/");
 }
 module.exports.logout = async (req, res) => {
@@ -73,6 +89,14 @@ module.exports.logout = async (req, res) => {
             statusOnline: "Offline"
         }
     )
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_STATUS_ONLINE", 
+            {
+                userId: res.locals.user.id,
+                status: "Offline"
+            }
+        )
+    })
     req.flash("success", "Đăng xuất thành công!");
     res.clearCookie("tokenUser");
     res.redirect("/");

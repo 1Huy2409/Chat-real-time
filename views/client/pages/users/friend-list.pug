@@ -9,7 +9,7 @@ block main
                 +box-head("Danh sách bạn bè")
         .row    
             each user in users
-                .col-6
+                .col-6(user-id = user.id)
                     div(class = "box-user")
                         div(class = "inner-avatar")
                             img(
@@ -20,7 +20,7 @@ block main
                             div(class = "inner-name") #{user.fullName}
                             span(
                                 class = "inner-status"
-                                status-online = "Online"
+                                status-online = user.statusOnline
                             )
                                 <i class="fa fa-circle" aria-hidden="true"></i>
                             div(class = "inner-buttons") 
