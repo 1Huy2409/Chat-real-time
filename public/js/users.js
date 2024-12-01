@@ -13,7 +13,7 @@ if (listBtnAddFriend.length > 0) {
 const listBtnCancelFriend = document.querySelectorAll("[btn-cancel-friend]");
 if (listBtnCancelFriend.length > 0) {
     listBtnCancelFriend.forEach(button => {
-        button.addEventListener("click", ()=> {
+        button.addEventListener("click", () => {
             button.closest(".box-user").classList.remove("add");
             const userId = button.getAttribute("btn-cancel-friend");
             socket.emit("CLIENT_CANCEL_FRIEND", userId)
@@ -51,3 +51,57 @@ socket.on("SERVER_RETURN_USERS_ACCEPT_LENGTH", (data) => {
         badgeUserAccept.innerHTML = `${data.acceptLength}`
     }
 })
+// END SERVER_RETURN_USERS_ACCEPT_LENGTH
+
+// SERVER_RETURN_INFO_ACCEPT
+socket.on("SERVER_RETURN_INFO_ACCEPT", (data) => {
+    const infoUserAccept = document.querySelector(`[info-user-accept = "${data.userIdB}"]`);
+    if (infoUserAccept) {
+        const boxAcceptInfo = document.createElement('div');
+        boxAcceptInfo.classList.add("col-6");
+        boxAcceptInfo.innerHTML = `
+            <div class="box-user">
+                <div class="inner-avatar">
+                    <img 
+                        src="${data.infoUserA.avatar ? data.infoUserA.avatar : 'https://i.pinimg.com/736x/8f/1c/a2/8f1ca2029e2efceebd22fa05cca423d7.jpg'}" 
+                        alt="${data.infoUserA.fullName}">
+                </div>
+                <div class="inner-info">
+                    <div class="inner-name">${data.infoUserA.fullName}</div>
+                    <div class="inner-buttons">
+                        <button 
+                            class="btn btn-sm bn-primary mr-1" 
+                            btn-accept-friend="${data.infoUserA._id}">Chấp nhận</button>
+                        <button 
+                            class="btn btn-sm bn-primary mr-1" 
+                            btn-delete-friend="${data.infoUserA._id}">Xóa</button>
+                        <button 
+                            class="btn btn-sm bn-primary mr-1" 
+                            btn-accepted-friend="${data.infoUserA._id}" 
+                            disabled>Đã chấp nhận</button>
+                        <button 
+                            class="btn btn-sm bn-primary mr-1" 
+                            btn-deleted-friend="${data.infoUserA._id}" 
+                            disabled>Đã xóa</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        infoUserAccept.appendChild(boxAcceptInfo);
+        // catch event accept
+        const buttonAccept = boxAcceptInfo.querySelector("[btn-accept-friend]");
+        buttonAccept.addEventListener("click", () => {
+            buttonAccept.closest(".box-user").classList.add("accepted");
+            const userId = buttonAccept.getAttribute("btn-accept-friend");
+            socket.emit("CLIENT_ACCEPT_FRIEND", userId)
+        })
+        // catch event delete
+        const buttonDelete = boxAcceptInfo.querySelector("[btn-delete-friend]");
+        buttonDelete.addEventListener("click", () => {
+            buttonDelete.closest(".box-user").classList.add("refuse");
+            const userId = buttonDelete.getAttribute("btn-delete-friend");
+            socket.emit("CLIENT_REFUSE_FRIEND", userId)
+        })
+    }
+})
+// END SERVER_RETURN_INFO_ACCEPT

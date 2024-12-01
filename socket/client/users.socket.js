@@ -36,12 +36,21 @@ module.exports = async (res) => {
                     _id: userId
                 }
             )
+            const infoUserA = await User.findOne(
+                {
+                    _id: myUserId
+                }
+            )
             socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH", 
                 {
                     UserIdB: userId,
                     acceptLength: infoUserB.acceptFriend.length
                 }
             )
+            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT", {
+                infoUserA: infoUserA,
+                userIdB: userId
+            })
 
         }) 
         //CANCEL REQUEST
