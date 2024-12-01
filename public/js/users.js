@@ -43,3 +43,11 @@ if (listBtnAcceptFriend.length > 0) {
         })
     })
 }
+
+// SERVER_RETURN_USERS_ACCEPT_LENGTH
+socket.on("SERVER_RETURN_USERS_ACCEPT_LENGTH", (data) => {
+    const badgeUserAccept = document.querySelector(`[badge-users-accept = "${data.UserIdB}"]`)
+    if (badgeUserAccept) {
+        badgeUserAccept.innerHTML = `${data.acceptLength}`
+    }
+})

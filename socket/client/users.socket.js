@@ -1,10 +1,10 @@
 const User = require("../../models/user.model");
 
 module.exports = async (res) => {
+    const myUserId = res.locals.user.id;
     _io.once("connection", (socket) => {
         //ADD_FRIEND
         socket.on("CLIENT_ADD_FRIEND", async (userId) => {
-            const myUserId = res.locals.user.id;
             const existBinA = await User.findOne({
                 _id: myUserId,
                 requestFriend: userId
@@ -31,11 +31,21 @@ module.exports = async (res) => {
                     }
                 )
             }
+            const infoUserB = await User.findOne(
+                {
+                    _id: userId
+                }
+            )
+            socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH", 
+                {
+                    UserIdB: userId,
+                    acceptLength: infoUserB.acceptFriend.length
+                }
+            )
 
         }) 
         //CANCEL REQUEST
         socket.on("CLIENT_CANCEL_FRIEND", async (userId) => {
-            const myUserId = res.locals.user.id;
             const existBinA = await User.findOne({
                 _id: myUserId,
                 requestFriend: userId
@@ -62,10 +72,20 @@ module.exports = async (res) => {
                     }
                 )
             }
+            const infoUserB = await User.findOne(
+                {
+                    _id: userId
+                }
+            )
+            socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH", 
+                {
+                    UserIdB: userId,
+                    acceptLength: infoUserB.acceptFriend.length
+                }
+            )
         })
         //REFUSE REQUEST
         socket.on("CLIENT_REFUSE_FRIEND", async (userId) => {
-            const myUserId = res.locals.user.id;
             const existBinA = await User.findOne({
                 _id: myUserId,
                 acceptFriend: userId
@@ -96,7 +116,6 @@ module.exports = async (res) => {
         //ACCEPT REQUEST
         socket.on("CLIENT_ACCEPT_FRIEND", async (userId) => {
             //diff: push userId and myUserId into friendList of each other
-            const myUserId = res.locals.user.id;
             const existBinA = await User.findOne({
                 _id: myUserId,
                 acceptFriend: userId
@@ -131,5 +150,7 @@ module.exports = async (res) => {
                 )
             }
         })
+        // SERVER_RETURN_USERS_ACCEPT_LENGTH
+        
     })
 }
