@@ -484,3 +484,20 @@ a:hover {
 .box-user.accepted [btn-accepted-friend] {
     display: inline-block;
 }
+.inner-info a {
+    background-color: rgb(12, 69, 175);
+    color: white;
+    text-decoration: none;
+}
+.inner-info a:hover {
+    background-color: #fff;
+    color: black;
+}
+.inner-info .inner-status {
+    font-size: 12px;
+    color: #45a049;
+    opacity: 0;
+}
+.inner-info .inner-status[status-online = "Online"] {
+    opacity: 1;
+}

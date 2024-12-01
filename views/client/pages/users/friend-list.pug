@@ -18,5 +18,14 @@ block main
                             )
                         div(class = "inner-info")
                             div(class = "inner-name") #{user.fullName}
+                            span(
+                                class = "inner-status"
+                                status-online = "Online"
+                            )
+                                <i class="fa fa-circle" aria-hidden="true"></i>
+                            div(class = "inner-buttons") 
+                                a(
+                                    class = "btn btn-sm bn-primary mr-1"
+                                ) Nhắn tin
 block script 
     <script type = "module" src="/js/users.js"></script>  

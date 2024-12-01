@@ -27,6 +27,12 @@ module.exports.registerPost = async (req, res) => {
     });
     await user.save();
     res.cookie("tokenUser", user.tokenUser);
+    await User.updateOne(
+        {tokenUser: user.tokenUser},
+        {
+            statusOnline: "Online"
+        }
+    )
     res.redirect("/");
 }
 module.exports.login = async (req, res) => {
@@ -52,9 +58,21 @@ module.exports.loginPost = async (req, res) => {
         return;
     }
     res.cookie("tokenUser", user.tokenUser);
+    await User.updateOne(
+        {tokenUser: user.tokenUser},
+        {
+            statusOnline: "Online"
+        }
+    )
     res.redirect("/");
 }
 module.exports.logout = async (req, res) => {
+    await User.updateOne(
+        {tokenUser: res.locals.user.tokenUser},
+        {
+            statusOnline: "Offline"
+        }
+    )
     req.flash("success", "Đăng xuất thành công!");
     res.clearCookie("tokenUser");
     res.redirect("/");
