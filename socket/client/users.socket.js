@@ -92,6 +92,12 @@ module.exports = async (res) => {
                     acceptLength: infoUserB.acceptFriend.length
                 }
             )
+            socket.broadcast.emit("SERVER_RETURN_ID_ACCEPT", 
+                {
+                    userIdA: myUserId,
+                    userIdB: userId
+                }
+            )
         })
         //REFUSE REQUEST
         socket.on("CLIENT_REFUSE_FRIEND", async (userId) => {

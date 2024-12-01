@@ -59,6 +59,7 @@ socket.on("SERVER_RETURN_INFO_ACCEPT", (data) => {
     if (infoUserAccept) {
         const boxAcceptInfo = document.createElement('div');
         boxAcceptInfo.classList.add("col-6");
+        boxAcceptInfo.setAttribute("user-id-accept", data.infoUserA._id)
         boxAcceptInfo.innerHTML = `
             <div class="box-user">
                 <div class="inner-avatar">
@@ -105,3 +106,16 @@ socket.on("SERVER_RETURN_INFO_ACCEPT", (data) => {
     }
 })
 // END SERVER_RETURN_INFO_ACCEPT
+
+// SERVER_RETURN_ID_ACCEPT
+socket.on("SERVER_RETURN_ID_ACCEPT", (data) => {
+    const infoUserAccept = document.querySelector(`[info-user-accept = "${data.userIdB}"]`);
+    if (infoUserAccept) {
+        //find boxRemove
+        const boxRemoveAccept = infoUserAccept.querySelector(`[user-id-accept = "${data.userIdA}"]`);
+        if (boxRemoveAccept) {
+            infoUserAccept.removeChild(boxRemoveAccept);
+        }
+    }
+})
+// END SERVER_RETURN_ID_ACCEPT
