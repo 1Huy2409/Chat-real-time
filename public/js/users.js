@@ -119,3 +119,15 @@ socket.on("SERVER_RETURN_ID_ACCEPT", (data) => {
     }
 })
 // END SERVER_RETURN_ID_ACCEPT
+
+// SERVER_RETURN_ID_REQUEST
+socket.on("SERVER_RETURN_ID_REQUEST", (data) => {
+    const userNotFriend = document.querySelector(`[user-not-friend = "${data.userIdB}"]`);
+    if (userNotFriend) {
+        const boxRemoveUser = userNotFriend.querySelector(`[user-id = "${data.userIdA}"]`);
+        if (boxRemoveUser) {
+            userNotFriend.removeChild(boxRemoveUser);
+        }
+    }
+})
+// END SERVER_RETURN_ID_REQUEST

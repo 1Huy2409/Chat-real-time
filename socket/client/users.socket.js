@@ -47,11 +47,18 @@ module.exports = async (res) => {
                     acceptLength: infoUserB.acceptFriend.length
                 }
             )
-            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT", {
-                infoUserA: infoUserA,
-                userIdB: userId
-            })
-
+            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT", 
+                {
+                    infoUserA: infoUserA,
+                    userIdB: userId
+                }
+            )
+            socket.broadcast.emit("SERVER_RETURN_ID_REQUEST", 
+                {
+                    userIdA: myUserId,
+                    userIdB: userId
+                }
+            )
         }) 
         //CANCEL REQUEST
         socket.on("CLIENT_CANCEL_FRIEND", async (userId) => {
