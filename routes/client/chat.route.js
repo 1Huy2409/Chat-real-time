@@ -5,5 +5,4 @@ const roomMiddleware = require("../../middlewares/client/room.middleware");
 router.get('/:roomChatId', 
     roomMiddleware.accessRoom,
     controller.chat);
-
 module.exports = router;
