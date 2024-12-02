@@ -73,7 +73,15 @@ module.exports.friendList = async (req, res) => {
         {
             _id: {$in: listUserId}
         }
-    )
+    ) //lay duoc danh sach nhung nguoi ban
+    //lay ra roomChatId cho moi friend
+    for (let user of users) {
+        for (let friend of myUser.friendList) {
+            if (user.id = friend.user_id) {
+                user.infoRoomChat = friend.room_chat_id;
+            }
+        }
+    }
     res.render("client/pages/users/friend-list", {
         pageTitle: "Danh sách bạn bè",
         users: users

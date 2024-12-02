@@ -1,5 +1,5 @@
 const User = require("../../models/user.model");
-
+const RoomChat = require("../../models/rooms-chat.model")
 module.exports = async (res) => {
     const myUserId = res.locals.user.id;
     _io.once("connection", (socket) => {
@@ -12,9 +12,9 @@ module.exports = async (res) => {
             if (!existBinA) {
                 //add id cua b vao request cua a
                 await User.updateOne(
-                    {_id: myUserId},
+                    { _id: myUserId },
                     {
-                        $push: {requestFriend: userId}
+                        $push: { requestFriend: userId }
                     }
                 )
             }
@@ -25,9 +25,9 @@ module.exports = async (res) => {
             if (!existAinB) {
                 //add id cua b vao request cua a
                 await User.updateOne(
-                    {_id: userId},
+                    { _id: userId },
                     {
-                        $push: {acceptFriend: myUserId}
+                        $push: { acceptFriend: myUserId }
                     }
                 )
             }
@@ -41,25 +41,25 @@ module.exports = async (res) => {
                     _id: myUserId
                 }
             )
-            socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH", 
+            socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH",
                 {
                     UserIdB: userId,
                     acceptLength: infoUserB.acceptFriend.length
                 }
             )
-            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT", 
+            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT",
                 {
                     infoUserA: infoUserA,
                     userIdB: userId
                 }
             )
-            socket.broadcast.emit("SERVER_RETURN_ID_REQUEST", 
+            socket.broadcast.emit("SERVER_RETURN_ID_REQUEST",
                 {
                     userIdA: myUserId,
                     userIdB: userId
                 }
             )
-        }) 
+        })
         //CANCEL REQUEST
         socket.on("CLIENT_CANCEL_FRIEND", async (userId) => {
             const existBinA = await User.findOne({
@@ -69,9 +69,9 @@ module.exports = async (res) => {
             if (existBinA) {
                 //add id cua b vao request cua a
                 await User.updateOne(
-                    {_id: myUserId},
+                    { _id: myUserId },
                     {
-                        $pull: {requestFriend: userId}
+                        $pull: { requestFriend: userId }
                     }
                 )
             }
@@ -82,9 +82,9 @@ module.exports = async (res) => {
             if (existAinB) {
                 //add id cua b vao request cua a
                 await User.updateOne(
-                    {_id: userId},
+                    { _id: userId },
                     {
-                        $pull: {acceptFriend: myUserId}
+                        $pull: { acceptFriend: myUserId }
                     }
                 )
             }
@@ -93,13 +93,13 @@ module.exports = async (res) => {
                     _id: userId
                 }
             )
-            socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH", 
+            socket.broadcast.emit("SERVER_RETURN_USERS_ACCEPT_LENGTH",
                 {
                     UserIdB: userId,
                     acceptLength: infoUserB.acceptFriend.length
                 }
             )
-            socket.broadcast.emit("SERVER_RETURN_ID_ACCEPT", 
+            socket.broadcast.emit("SERVER_RETURN_ID_ACCEPT",
                 {
                     userIdA: myUserId,
                     userIdB: userId
@@ -115,9 +115,9 @@ module.exports = async (res) => {
             if (existBinA) {
                 //add id cua b vao request cua a
                 await User.updateOne(
-                    {_id: myUserId},
+                    { _id: myUserId },
                     {
-                        $pull: {acceptFriend: userId}
+                        $pull: { acceptFriend: userId }
                     }
                 )
             }
@@ -128,9 +128,9 @@ module.exports = async (res) => {
             if (existAinB) {
                 //add id cua b vao request cua a
                 await User.updateOne(
-                    {_id: userId},
+                    { _id: userId },
                     {
-                        $pull: {requestFriend: myUserId}
+                        $pull: { requestFriend: myUserId }
                     }
                 )
             }
@@ -142,37 +142,58 @@ module.exports = async (res) => {
                 _id: myUserId,
                 acceptFriend: userId
             })
-            if (existBinA) {
-                //add id cua b vao request cua a
-                await User.updateOne(
-                    {_id: myUserId},
-                    {
-                        $pull: {acceptFriend: userId},
-                        $push: {friendList: {
-                            user_id: userId,
-                            room_chat_id: ""
-                        }}
-                    }
-                )
-            }
             const existAinB = await User.findOne({
                 _id: userId,
                 requestFriend: myUserId
             })
+            let roomChat;
+            if (existAinB && existBinA) {
+                roomChat = new RoomChat(
+                    {
+                        users: [
+                            {
+                                user_id: myUserId,
+                                role: "user"
+                            },
+                            {
+                                user_id: userId,
+                                role: "user"
+                            }
+                        ]
+                    }
+                )
+                await roomChat.save();
+            }
+            if (existBinA) {
+                //add id cua b vao request cua a
+                await User.updateOne(
+                    { _id: myUserId },
+                    {
+                        $pull: { acceptFriend: userId },
+                        $push: {
+                            friendList: {
+                                user_id: userId,
+                                room_chat_id: roomChat.id
+                            }
+                        }
+                    }
+                )
+            }
             if (existAinB) {
                 await User.updateOne(
-                    {_id: userId},
+                    { _id: userId },
                     {
-                        $pull: {requestFriend: myUserId},
-                        $push: {friendList: {
-                            user_id: myUserId,
-                            room_chat_id: ""
-                        }}
+                        $pull: { requestFriend: myUserId },
+                        $push: {
+                            friendList: {
+                                user_id: myUserId,
+                                room_chat_id: roomChat.id
+                            }
+                        }
                     }
                 )
             }
         })
         // SERVER_RETURN_USERS_ACCEPT_LENGTH
-        
     })
 }
